@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Capstone.Models.Pros>
+﻿@model IEnumerable<Capstone.Models.ViewModels.ProConViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,9 +12,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.ApplicationUser)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
@@ -27,20 +27,20 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProEntry)
             </td>
-            <td>
+            @*<td>
                 <a asp-action="Edit" asp-route-id="@item.ProId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ProId">Delete</a>
-            </td>
+            </td>*@
         </tr>
 }
     </tbody>

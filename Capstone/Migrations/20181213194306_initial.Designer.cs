@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Capstone.Data.Migrations
+namespace Capstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181211203120_initial")]
+    [Migration("20181213194306_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace Capstone.Data.Migrations
                     b.Property<string>("Date")
                         .IsRequired();
 
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
                     b.HasKey("ConId");
 
                     b.HasIndex("ApplicationUserId");
@@ -56,6 +59,9 @@ namespace Capstone.Data.Migrations
                         .IsRequired();
 
                     b.Property<string>("ProEntry")
+                        .IsRequired();
+
+                    b.Property<string>("UserId")
                         .IsRequired();
 
                     b.HasKey("ProId");

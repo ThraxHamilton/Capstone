@@ -7,15 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Capstone.Data;
 using Capstone.Models;
+using Capstone.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace Capstone.Controllers
 {
     public class ProsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        /* Represents user data */
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProsController(ApplicationDbContext context)
+        /* Retrieves the data for the current user from _userManager*/
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
+        public ProsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -49,7 +57,7 @@ namespace Capstone.Controllers
         // GET: Pros/Create
         public IActionResult Create()
         {
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
@@ -58,16 +66,31 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProId,ApplicationUserId,Date,ProEntry")] Pros pros)
+        public async Task<IActionResult> Create(ProConViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pros);
+                viewModel.ApplicationUser = await GetCurrentUserAsync();
+                var pro = new Pros
+                {
+                    Date = viewModel.Date,
+                    ProEntry = viewModel.ProEntry
+                    
+                };
+
+                var con = new Cons
+                {
+                    Date = viewModel.Date,
+                    ConEntry = viewModel.ConEntry
+                };
+                _context.Add(pro);
+               _context.Add(con);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", pros.ApplicationUserId);
-            return View(pros);
+            //ViewData["ProId"] = new SelectList(_context.ApplicationUsers, "ProId", "ProEntry", "Date", pros.UserId);
+            return View(viewModel);
         }
 
         // GET: Pros/Edit/5
@@ -83,7 +106,7 @@ namespace Capstone.Controllers
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", pros.ApplicationUserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", pros.UserId);
             return View(pros);
         }
 
@@ -92,7 +115,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProId,ApplicationUserId,Date,ProEntry")] Pros pros)
+        public async Task<IActionResult> Edit(int id, [Bind("ProId,UserId,Date,ProEntry")] Pros pros)
         {
             if (id != pros.ProId)
             {
@@ -119,7 +142,7 @@ namespace Capstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", pros.ApplicationUserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", pros.UserId);
             return View(pros);
         }
 

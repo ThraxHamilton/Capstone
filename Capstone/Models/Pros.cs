@@ -11,7 +11,7 @@ namespace Capstone.Models
         [Key]
         public int ProId { get; set; }
         [Required]
-        public string ApplicationUserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public ApplicationUser ApplicationUser { get; set; }
         [Required]

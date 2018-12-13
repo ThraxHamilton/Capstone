@@ -48,7 +48,7 @@ namespace Capstone.Controllers
         // GET: Cons/Create
         public IActionResult Create()
         {
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View();
         }
 
@@ -57,7 +57,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ConId,ApplicationUserId,Date,ConEntry")] Cons cons)
+        public async Task<IActionResult> Create([Bind("ConId,UserId,Date,ConEntry")] Cons cons)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace Capstone.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", cons.ApplicationUserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", cons.UserId);
             return View(cons);
         }
 
@@ -82,7 +82,7 @@ namespace Capstone.Controllers
             {
                 return NotFound();
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", cons.ApplicationUserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", cons.UserId);
             return View(cons);
         }
 
@@ -91,7 +91,7 @@ namespace Capstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ConId,ApplicationUserId,Date,ConEntry")] Cons cons)
+        public async Task<IActionResult> Edit(int id, [Bind("ConId,UserId,Date,ConEntry")] Cons cons)
         {
             if (id != cons.ConId)
             {
@@ -118,7 +118,7 @@ namespace Capstone.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", cons.ApplicationUserId);
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", cons.UserId);
             return View(cons);
         }
 
